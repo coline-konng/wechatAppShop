@@ -1,11 +1,6 @@
 <template>
   <view>
-    <view class="searchBar">
-    <navigator url="/pages/search/main" open-type="navigate">
-      <icon type="search" size="30rpx" />
-      搜索
-    </navigator>
-    </view>
+    <app-search></app-search>
     <!-- 轮播图 -->
     <swiper
       indicator-dots
@@ -52,6 +47,7 @@
 </template>
 
 <script>
+import Search from '../../components/Search.vue'
 export default {
   data() {
     return {
@@ -60,6 +56,9 @@ export default {
       navBarInfo:[],
       productList:[]
     };
+  },
+  components:{
+    "app-search": Search
   },
   onLoad(){
     //请求轮播图部分
