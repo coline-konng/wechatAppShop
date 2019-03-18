@@ -5,24 +5,28 @@
     <view class="cate_main">
     <!-- 左边导航栏 -->
       <scroll-view scroll-y class="left_menu">
-        <block v-for="(item,index) in [1,2,13,3,4,56,3,2,4,3,2]" :key="index">
+        <block v-for="(item,index) in cate" :key="index">
           <view class="menu_item" 
           :class="{ active: index===tabIndex }"
           @tap="handleChangeTab(index)"
-          >大家电</view>
+          >
+          {{item.cat_name}}
+          </view>
        </block>
       </scroll-view>
     <!-- 右边内容部分 -->
       <scroll-view scroll-y class="right_content">
-        <view class="content_title">电视</view>
-        <view class="content_list">
-          <block v-for="(item,index) in [1,2,13,3,4,56,3,2,4,3,2,2,13,3,4,56,3,2,4,3,2,2,13,3,4,56,3,2,4,3,2]" :key="index">
-            <view class="content_info">
-              <image src="https://img.alicdn.com/bao/uploaded/i2/3248014320/TB2ETXMieySBuNjy1zdXXXPxFXa_!!3248014320-0-item_pic.jpg_200x200q90.jpg"></image>
-              <view>曲面电视</view>
+        <block v-for="(item,index) in rigthtData" :key="index">
+          <view class="content_title">{{ item.cat_name }}</view>
+          <view class="content_list">
+            <block v-for="(subItem,subIndex) in item.children" :key="subIndex">
+            <view class="content_info" @tap="gotoGoodsList(subItem.cat_name)">
+              <image :src="subItem.cat_icon"></image>
+              <view>{{ subItem.cat_name }}</view>
             </view>
-          </block>
-        </view>
+            </block>
+          </view>
+        </block>
       </scroll-view>
     </view>
   </view>
@@ -30,19 +34,51 @@
 </template>
 
 <script>
-import Search from '../../components/Search.vue'
+import Search from '../../components/Search.vue';
+import request from '../../utils/request.js';
 export default {
   data () {
     return {
-      tabIndex:0
+      tabIndex:0,
+      cate:[],
+      rigthtData:[]
     }
   },
   components:{
     "app-search": Search
   },
+  onLoad(){
+    wx.showLoading({
+      title: '加载中',
+      mask:true
+    }),
+    request('api/public/v1/categories')
+    .then((res)=>{
+      //console.log(res);
+      const {message}=res.data;
+      this.cate=message;
+      wx.hideLoading();
+      this.rigthtData=this.cate[this.tabIndex].children;
+    })
+  },
   methods:{
+    //点击菜单栏，切换数据
     handleChangeTab(index){
+      //通过修改tabIndex，给左侧菜单栏添加active类
       this.tabIndex=index;
+      //修改右边要渲染的数据
+      //因为会存在bug:缓存滚动的位置，切换到其他类别的时候，不是从顶部开始展示
+      //所以需要先清空，再修改赋值
+      this.rigthtData=[];
+      setTimeout(()=>{
+        this.rigthtData=this.cate[this.tabIndex].children;
+      }) 
+    },
+    // 跳转到商品列表页
+    gotoGoodsList(name){
+      wx.navigateTo({
+        url:'/pages/goods_list/main?keyword='+name
+      })
     }
   }
 }
