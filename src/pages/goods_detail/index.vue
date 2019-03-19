@@ -1,6 +1,6 @@
 <template>
   <view>
-    搜索页{{ keyword }}
+    商品详情页{{id}}
   </view>
 </template>
 
@@ -9,11 +9,11 @@
 export default {
   data () {
     return {
-      keyword:''
+      id:''
     }
   },
   onLoad(query){
-    this.keyword=query.keyword;
+    this.id=query.id;
   }
 }
 </script>

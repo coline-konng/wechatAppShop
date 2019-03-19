@@ -1,7 +1,7 @@
 <template>
   <view>
     <!-- 搜索框 -->
-    <view class="searchBar">
+    <view class="searchBar" @tap="gotoSearch(keyword)">
       <view class="searchInput">
         <icon type="search" size="30rpx"/>
         {{keyword}}
@@ -19,14 +19,14 @@
     <!-- 产品列表内容 -->
     <view class="goodsLsit">
       <block v-for="(item,index) in goodsList" :key="index">
-        <view class="goodsItem">
-        <view class="goodsImg">
-          <image :src="item.goods_small_logo"></image>
-        </view>
-        <view class="goodsInfo"> 
-          <view class="goodsTitle">{{ item.goods_name }}</view>
-          <view class="goodsPrice">￥<text>{{ item.goods_price }}</text></view>
-        </view>
+        <view class="goodsItem" @tap="gotoDetail(item.goods_id)">
+          <view class="goodsImg">
+            <image :src="item.goods_small_logo"></image>
+          </view>
+          <view class="goodsInfo"> 
+            <view class="goodsTitle">{{ item.goods_name }}</view>
+            <view class="goodsPrice">￥<text>{{ item.goods_price }}</text></view>
+          </view>
       </view>
       </block>
       
@@ -95,6 +95,12 @@ export default {
       wx.stopPullDownRefresh();
       //关闭加载提示
       wx.hideLoading();
+    },
+    gotoSearch(keyword){
+      wx.navigateTo({ url: '/pages/search/main?keyword='+keyword });
+    },
+    gotoDetail(id){
+      wx.navigateTo({ url: '/pages/goods_detail/main?id='+id });
     }
   },
   //监听用户上拉触底事件
