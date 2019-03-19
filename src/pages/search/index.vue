@@ -4,9 +4,13 @@
     <view class="search-wrapper">
       <view class="search-input">
         <icon type="search" size="30rpx"></icon>
-        <input type="text" :value="keyword" placeholder="请输入你想要的商品">
+        <input type="text" 
+        :value="keyword"
+        v-model="inputVal"
+        placeholder="请输入你想要的商品"
+        @confirm="handleSearch">
       </view>
-      <button class="cancel" size="mini">取消</button>
+      <button class="cancel" size="mini" @tap="handleCancel">取消</button>
     </view>
     <!-- 历史分区 -->
     <view class="history-title">
@@ -15,7 +19,7 @@
     </view>
     <view class="history-list">
       <block v-for="(item,index) in history" :key="index">
-        <view class="history-list-item">小米</view>
+        <view class="history-list-item">{{ item }}</view>
       </block>
     </view>
     <!-- 搜索提示 -->
@@ -34,13 +38,29 @@ export default {
   data () {
     return {
       keyword:'',
-      history:[1,1,2,2,13,4,35,6,7,1],
-      tips:[1,1,2,2,13,4,35,6,7,1]
+      history:wx.getStorageSync('history')||[],
+      tips:[],
+      inputVal:''
     }
   },
   onLoad(query){
     this.keyword=query.keyword;
+  },
+  methods:{
+    //搜索框中输入完成时触发
+    handleSearch(){
+      //1.将输入的内容存入搜索历史数组,并存入本地储存中，避免刷新页面时，搜索历史的丢失
+      this.history.unshift(this.inputVal);
+      wx.setStorageSync('history',this.history);
+      //2.跳转到相应的商品列表页中
+      //因为商品列表页和搜索页可以相互跳转，容易造成页面栈满导致无法跳转，所以用redirectTo替代navigateTo
+      wx.redirectTo({ url: '/pages/goods_list/main?keyword='+this.inputVal });
+    },
+    handleCancel(){
+      this.inputVal='';
+    }
   }
+  
 }
 </script>
 

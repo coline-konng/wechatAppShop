@@ -97,7 +97,7 @@ export default {
       wx.hideLoading();
     },
     gotoSearch(keyword){
-      wx.navigateTo({ url: '/pages/search/main?keyword='+keyword });
+      wx.redirectTo({ url: '/pages/search/main?keyword='+keyword });
     },
     gotoDetail(id){
       wx.navigateTo({ url: '/pages/goods_detail/main?id='+id });
