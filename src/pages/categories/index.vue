@@ -52,7 +52,7 @@ export default {
       title: '加载中',
       mask:true
     }),
-    request('api/public/v1/categories')
+    request.get('categories')
     .then((res)=>{
       //console.log(res);
       const {message}=res.data;
@@ -72,7 +72,7 @@ export default {
       this.rigthtData=[];
       setTimeout(()=>{
         this.rigthtData=this.cate[this.tabIndex].children;
-      }) 
+      },0) 
     },
     // 跳转到商品列表页
     gotoGoodsList(name){
@@ -101,7 +101,7 @@ export default {
   background: #f4f4f4;
   line-height: 100rpx;
   text-align: center;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1rpx solid #ccc;
   position: relative;
 }
 .left_menu .menu_item.active{
