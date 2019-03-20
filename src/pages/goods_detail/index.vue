@@ -1,6 +1,6 @@
 <template>
   <view>
-    商品详情页{{id}}
+    商品详情页{{goods_id}}
   </view>
 </template>
 
@@ -9,11 +9,11 @@
 export default {
   data () {
     return {
-      id:''
+      goods_id:''
     }
   },
   onLoad(query){
-    this.id=query.id;
+    this.goods_id=query.goods_id;
   }
 }
 </script>

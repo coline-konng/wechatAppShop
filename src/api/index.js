@@ -8,4 +8,9 @@ import request from "@/utils/request.js"
         return request.get("goods/search",obj);
 } */
 /* 简化：箭头函数 */
-export const getSearch = (obj) => request.get("goods/search", obj);
+// 请求商品列表页数据
+export const getSearch = obj => request.get("goods/search", obj);
+// 请求搜索页中建议查询数据 
+export const getTips = obj => request.get("goods/qsearch", obj);
+// 获取商品详情
+export const getDetail = obj => request.get("goods/detail", obj);

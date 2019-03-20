@@ -100,7 +100,7 @@ export default {
       wx.redirectTo({ url: '/pages/search/main?keyword='+keyword });
     },
     gotoDetail(id){
-      wx.navigateTo({ url: '/pages/goods_detail/main?id='+id });
+      wx.navigateTo({ url: '/pages/goods_detail/main?goods_id='+id });
     }
   },
   //监听用户上拉触底事件
