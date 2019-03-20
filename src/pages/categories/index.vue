@@ -85,6 +85,11 @@ export default {
 </script>
 
 <style>
+.searchBar{
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+}
 .cate_main{
   display: flex;
   position: fixed;
