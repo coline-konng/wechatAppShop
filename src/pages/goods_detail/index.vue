@@ -11,16 +11,16 @@
       circular
       class="bannerSwiper"
     >
-      <block v-for="(item,index) in [1,1,1]" :key="index">
+      <block v-for="(item,index) in goodDetail.pics" :key="index">
         <swiper-item>
-          <image src="https://img.alicdn.com/imgextra/i3/2579847795/TB2JpQLakfb_uJkSne1XXbE4XXa_!!2579847795-0-beehive-scenes.jpg_300x300.jpg" class="slide-image"></image>
+          <image :src="item.pics_big_url"></image>
         </swiper-item>
       </block>
     </swiper>
     <!-- 商品概要 -->
-    <view class="goods-price">￥999</view>
+    <view class="goods-price">￥{{ goodDetail.goods_price }}</view>
     <view class="goods-info">
-      <view class="info-left">商品文字概要</view>
+      <view class="info-left">{{ goodDetail.goods_name }}</view>
       <view class="info-right">
         <view class="iconfont icon-shoucang"></view>
         收藏
@@ -30,7 +30,9 @@
     <!-- 商品内容详情 -->
     <view class="detail">
       <view class="detail-title">商品详情标题</view>
-      <view class="detail-content">11111</view>
+      <view class="detail-content">
+        <view v-html="goodDetail.goods_introduce"></view>
+      </view>
     </view>
     <!-- 底部工具栏 -->
     <view class="footer">
@@ -57,14 +59,21 @@
 </template>
 
 <script>
+import {getDetail} from '@/api/index.js';
 export default {
   data() {
     return {
-      goods_id: ""
+      goods_id: "",
+      goodDetail:{}
     };
   },
   onLoad(query) {
     this.goods_id = query.goods_id;
+    getDetail({
+      goods_id:this.goods_id
+    }).then((res)=>{
+      this.goodDetail=res.data.message;
+    })
   }
 };
 </script>
@@ -114,6 +123,7 @@ swiper {
 }
 .delivery{
   padding-left:20rpx;
+  padding-bottom: 20rpx;
   font-size:26rpx;
   color:#999;
 }
