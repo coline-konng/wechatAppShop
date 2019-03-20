@@ -13,7 +13,7 @@
     >
       <block v-for="(item,index) in goodDetail.pics" :key="index">
         <swiper-item>
-          <image :src="item.pics_big_url"></image>
+          <image :src="item.pics_big_url" @tap="handlePreview(item.pics_big_url)"></image>
         </swiper-item>
       </block>
     </swiper>
@@ -31,7 +31,9 @@
     <view class="detail">
       <view class="detail-title">商品详情标题</view>
       <view class="detail-content">
-        <view v-html="goodDetail.goods_introduce"></view>
+        <!-- <view v-html="goodDetail.goods_introduce"></view> -->
+        <!-- wx富文本组件 -->
+        <rich-text type="node" :nodes="goodDetail.goods_introduce"></rich-text>
       </view>
     </view>
     <!-- 底部工具栏 -->
@@ -74,6 +76,16 @@ export default {
     }).then((res)=>{
       this.goodDetail=res.data.message;
     })
+  },
+  methods:{
+    //点击轮播图片，全屏预览展示
+    handlePreview(current){
+      let picUrls=this.goodDetail.pics.map(v=>v.pics_big_url);
+      wx.previewImage({
+        current,
+        urls: picUrls //需要预览的图片链接列表,
+      });
+    }
   }
 };
 </script>
