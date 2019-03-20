@@ -12,7 +12,7 @@
         @input="handleInput"
         >
       </view>
-      <button class="cancel" size="mini" @tap="handleCancel">取消</button>
+      <button class="cancel" size="mini" @tap="handleCancel" v-show="inputVal">取消</button>
     </view>
     <!-- 历史分区 -->
     <view class="history-title">
