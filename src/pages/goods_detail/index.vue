@@ -75,6 +75,7 @@ export default {
       goods_id:this.goods_id
     }).then((res)=>{
       this.goodDetail=res.data.message;
+      this.goodDetail.goods_introduce=this.goodDetail.goods_introduce.replace(/jpg.+?webp/g,'jpg')
     })
   },
   methods:{
