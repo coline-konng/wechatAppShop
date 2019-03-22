@@ -1,12 +1,12 @@
 <template>
   <view>
     <!-- 1.0 顶部地址选择 -->
-    <view class="cart-top" @tap="chooseAddressHandle">
+    <view class="cart-top" @tap="handelChooseAddress">
       <!-- 1.0.1 用户选择了收货地址的时候展示 -->
-      <block v-if="address.username">
+      <block v-if="address.userName">
         <view class="user">
-          <text>收货人：{{ address.username }}</text>
-          <text>{{ address.tel }}</text>
+          <text>收货人：{{ address.userName }}</text>
+          <text>{{ address.telNumber }}</text>
         </view>
         <view class="address">收货地址：{{ address.addressInfo }}</view>
       </block>
@@ -72,12 +72,24 @@
 export default {
   data() {
     return {
-      address: {
-        username: "",
-        tel: "",
-        addressInfo: ""
-      }
+      address: wx.getStorageSync('address')||{}
     };
+  },
+  methods:{
+    handelChooseAddress(){
+      wx.chooseAddress({
+        success:(res) => {
+          const {userName,telNumber,provinceName,cityName,countyName,detailInfo}=res;
+          const addressInfo=provinceName+cityName+countyName+detailInfo;
+          this.address={
+            userName,
+            telNumber,
+            addressInfo
+          };
+          wx.setStorageSync('address', this.address);
+        }
+      })      
+    }
   }
 };
 </script>
