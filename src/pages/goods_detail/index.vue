@@ -50,7 +50,7 @@
         <view class="iconfont icon-gouwuche"></view>
         购物车
       </view>
-      <view class="ft-right">
+      <view class="ft-right" @tap="handleAddCart(goodDetail.goods_id)">
         加入购物车
       </view>
       <view class="ft-right">
@@ -85,6 +85,33 @@ export default {
         current,
         urls: picUrls //需要预览的图片链接列表,
       });
+    },
+    //点击加入购物车,提示添加成功，并添加到本地储存中
+    handleAddCart(id){
+      //如果商品数据没能成功请求完成，也就没有goods_id,此时不做任何操作
+      if(!id) return;
+      //如有
+      // 加入购物车提示
+      wx.showToast({
+        title: '加入成功', //提示的内容,
+        icon: 'success',  //图标,
+        duration: 1000,   //延迟时间,1秒钟后自动消失
+        mask: true,       //显示透明蒙层，防止触摸穿透
+      });
+      let cartList=wx.getStorageSync('cartList')||{};
+      /* 注意：cartList的数据类型的设计：设计成对象类型，可以把商品信息存入到(id)属性中。
+      方便判断该商品是否应该存在 */
+      //判断该商品是否已经存在于cartList中
+      if(cartList[id]){
+        //存在
+        cartList[id].count++;
+      }else{
+        //不存在
+        cartList[id]=this.goodDetail;
+        cartList[id].count=1;
+      }
+      cartList[id].selected = true; 
+      wx.setStorageSync('cartList', cartList);
     }
   }
 };
